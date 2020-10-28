@@ -262,6 +262,8 @@ func MakeAndStartBot(version, token, token2, url, internalPort, emojiGuildID str
 
 	bot.Run(internalPort)
 
+	bot.user.setStatus("Goon represent, ready to kill")
+
 	return &bot
 }
 
