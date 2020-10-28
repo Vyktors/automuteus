@@ -181,14 +181,6 @@ func (bot *Bot) PushGuildLobbyUpdate(guildID string, status LobbyStatus) {
 }
 
 
-func HandlePlayCommand(s *discordgo.Session, game string) {
-	err := s.UpdateStatus(0, game)
-	if err != nil {
-		println("[Error] Issue while updating bot status: ", err)
-		return
-	}
-}
-
 var Version string
 
 // MakeAndStartBot does what it sounds like
@@ -203,8 +195,6 @@ func MakeAndStartBot(version, token, token2, url, internalPort, emojiGuildID str
 		log.Println("error creating Discord session,", err)
 		return nil
 	}
-
-	dg.HandlePlayCommand(dg, "wow")
 
 	if token2 != "" {
 		altDiscordSession, err = discordgo.New("Bot " + token2)
@@ -244,7 +234,7 @@ func MakeAndStartBot(version, token, token2, url, internalPort, emojiGuildID str
 		logPath:                 logPath,
 		captureTimeout:          timeoutSecs,
 	}
-
+	dg.AddHandler(bot.ready())
 	dg.AddHandler(bot.voiceStateChange())
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(bot.messageCreate())
@@ -279,6 +269,11 @@ func MakeAndStartBot(version, token, token2, url, internalPort, emojiGuildID str
 
 func (bot *Bot) Run(port string) {
 	go bot.socketioServer(port)
+}
+
+func (bot *Bot) ready(s *discordgo.Session, event *discordgo.Ready) {
+	// Set the playing status.
+	_ = s.UpdateStatus(0, "!airhorn")
 }
 
 func (bot *Bot) GracefulClose(seconds int, message string) {
