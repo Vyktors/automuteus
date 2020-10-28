@@ -180,6 +180,15 @@ func (bot *Bot) PushGuildLobbyUpdate(guildID string, status LobbyStatus) {
 	bot.ChannelsMapLock.RUnlock()
 }
 
+
+func HandlePlayCommand(s *discordgo.Session, game string) {
+	err := s.UpdateStatus(0, game)
+	if err != nil {
+		println("[Error] Issue while updating bot status: ", err)
+		return
+	}
+}
+
 var Version string
 
 // MakeAndStartBot does what it sounds like
@@ -194,6 +203,9 @@ func MakeAndStartBot(version, token, token2, url, internalPort, emojiGuildID str
 		log.Println("error creating Discord session,", err)
 		return nil
 	}
+
+	dg.HandlePlayCommand(dg, "wow")
+
 	if token2 != "" {
 		altDiscordSession, err = discordgo.New("Bot " + token2)
 		if err != nil {
@@ -857,7 +869,7 @@ func (bot *Bot) newGuild(emojiGuildID string) func(s *discordgo.Session, m *disc
 			SpecialEmojis: map[string]Emoji{},
 
 			AmongUsData: game.NewAmongUsData(),
-			GameRunning: true,
+			GameRunning: false,
 
 			guildSettings:             gs,
 			userSettingsUpdateChannel: userSettingsUpdateChannel,
