@@ -173,7 +173,6 @@ func discordMainWrapper() error {
 
 	bot := discord.MakeAndStartBot(version+"-"+commit, discordToken, discordToken2, url, internalPort, emojiGuildID, numShards, shardID, storageClient, logPath, captureTimeout)
 
-	bot.user.setGame("Ready to kill goons")
 	go discord.MessagesServer(servicePort, bot)
 
 	<-sc

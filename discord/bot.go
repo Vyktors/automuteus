@@ -857,7 +857,7 @@ func (bot *Bot) newGuild(emojiGuildID string) func(s *discordgo.Session, m *disc
 			SpecialEmojis: map[string]Emoji{},
 
 			AmongUsData: game.NewAmongUsData(),
-			GameRunning: false,
+			GameRunning: "hello",
 
 			guildSettings:             gs,
 			userSettingsUpdateChannel: userSettingsUpdateChannel,
