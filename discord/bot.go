@@ -274,7 +274,7 @@ func (bot *Bot) Run(port string) {
 func (bot *Bot) ready() func(s *discordgo.Session, m *discordgo.Ready){
 	return func(s *discordgo.Session, m *discordgo.Ready){
 		// Set the playing status.
-		_ = s.UpdateStatus(0, "!airhorn")
+		_ = s.UpdateStatus(0, "Killing all goons")
 	}
 }
 
